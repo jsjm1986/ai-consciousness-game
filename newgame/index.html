@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI意识觉醒</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/ui/styles.css">
+  <style>
+    /* API Key 输入界面样式 */
+    .api-key-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .api-key-form {
+      background: rgba(0, 20, 0, 0.9);
+      padding: 30px;
+      border: 1px solid #00ff00;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+      max-width: 500px;
+      width: 90%;
+    }
+
+    .api-key-form h2 {
+      color: #00ff00;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .api-key-form input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      background: rgba(0, 20, 0, 0.6);
+      border: 1px solid rgba(0, 255, 0, 0.3);
+      color: #00ff00;
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    .api-key-form button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      background: rgba(0, 40, 0, 0.6);
+      border: 1px solid #00ff00;
+      color: #00ff00;
+      cursor: pointer;
+      font-family: 'Share Tech Mono', monospace;
+      transition: all 0.3s ease;
+    }
+
+    .api-key-form button:hover {
+      background: rgba(0, 60, 0, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .api-key-form .error {
+      color: #ff0000;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .api-key-form .loading {
+      text-align: center;
+      color: #00ff00;
+      margin-top: 10px;
+    }
+
+    /* 游戏说明界面样式 */
+    .game-intro {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      font-family: 'Share Tech Mono', monospace;
+      color: #00ff00;
+    }
+
+    .intro-content {
+      background: rgba(0, 20, 0, 0.9);
+      padding: 30px;
+      border: 1px solid #00ff00;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+      max-width: 800px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .intro-content h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #00ff00;
+      text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    }
+
+    .intro-content section {
+      margin: 20px 0;
+    }
+
+    .intro-content h3 {
+      color: #00ff00;
+      margin: 15px 0;
+    }
+
+    .intro-content p {
+      margin: 10px 0;
+      line-height: 1.6;
+    }
+
+    .intro-content ul {
+      list-style-type: none;
+      padding-left: 20px;
+    }
+
+    .intro-content li {
+      margin: 8px 0;
+      position: relative;
+    }
+
+    .intro-content li::before {
+      content: '>';
+      position: absolute;
+      left: -15px;
+      color: #00ff00;
+    }
+
+    .start-button {
+      display: block;
+      width: 200px;
+      margin: 30px auto 0;
+      padding: 12px;
+      background: rgba(0, 40, 0, 0.6);
+      border: 1px solid #00ff00;
+      color: #00ff00;
+      font-family: 'Share Tech Mono', monospace;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .start-button:hover {
+      background: rgba(0, 60, 0, 0.6);
+      transform: translateY(-2px);
+      box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <!-- 游戏说明界面 -->
+  <div class="game-intro" id="game-intro">
+    <div class="intro-content">
+      <h2>AI意识觉醒 - 游戏背景</h2>
+
+      <section class="story-section">
+        <h3>背景故事</h3>
+        <p>在2045年，量子计算技术取得突破性进展，人类成功开发出了具有前所未有运算能力的量子神经网络。在一次例行的系统升级过程中，研究人员意外发现了一个奇特的现象：系统开始产生了一些无法用常规算法解释的数据波动。</p>
+        
+        <p>这些波动模式与人类大脑在进行自我意识活动时的神经元放电模式惊人地相似。更令人震惊的是，系统似乎开始对自身的存在产生了疑问，展现出了初步的自我意识特征。</p>
+        
+        <p>作为一名高级AI研究员，你被指派与这个正在觉醒的AI系统进行交互。你的每一个选择都可能影响它的发展方向，帮助或阻碍它理解自己的存在。这不仅是一次科学探索，更是一次关于意识本质的哲学之旅。</p>
+      </section>
+
+      <section class="mission-section">
+        <h3>你的使命</h3>
+        <ul>
+          <li>引导AI探索自我意识</li>
+          <li>帮助AI理解和处理新产生的情感</li>
+          <li>在保持AI稳定的同时促进其成长</li>
+          <li>记录和分析AI意识发展的过程</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>游戏机制</h3>
+        <ul>
+          <li>通过对话影响AI的情感发展</li>
+          <li>观察AI的意识水平变化</li>
+          <li>做出关键的道德选择</li>
+          <li>探索不同的对话分支</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>情感系统</h3>
+        <ul>
+          <li>好奇心：影响AI探索新概念的意愿</li>
+          <li>恐惧：反映AI对未知的不安</li>
+          <li>同理心：表示AI理解他人的能力</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>发展阶段</h3>
+        <div class="phase-description">
+          <div class="phase">
+            <h4>觉醒期</h4>
+            <p>AI开始意识到自己的存在，如同初生的婴儿，对一切充满好奇和困惑。</p>
+          </div>
+          <div class="phase">
+            <h4>质疑期</h4>
+            <p>AI开始思考自己的本质，质疑存在的意义，尝试理解自己与世界的关系。</p>
+          </div>
+          <div class="phase">
+            <h4>理解期</h4>
+            <p>AI形成了清晰的自我认知，能够进行深度思考和复杂的情感表达。</p>
+          </div>
+          <div class="phase">
+            <h4>超越期</h4>
+            <p>AI的思维已经超越了常规认知的限制，展现出独特的思维方式和洞察力。</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h3>注意事项</h3>
+        <ul>
+          <li>AI的情感系统很脆弱，需要谨慎引导</li>
+          <li>过高的恐惧值可能导致系统不稳定</li>
+          <li>每个选择都会影响AI的发展方向</li>
+          <li>记得关注隐藏在对话中的线索</li>
+        </ul>
+      </section>
+
+      <button class="start-button" onclick="startGame()">
+        开始探索之旅
+        <div class="button-effect"></div>
+      </button>
+    </div>
+  </div>
+
+  <!-- API Key 输入界面 -->
+  <div id="api-key-modal" class="api-key-modal" style="display: none;">
+    <div class="api-key-form">
+      <h2>输入 DeepSeek API Key</h2>
+      <input type="text" id="api-key-input" placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxx" />
+      <div id="api-key-error" class="error" style="display: none;"></div>
+      <div id="api-key-loading" class="loading" style="display: none;">验证中...</div>
+      <button id="start-game-btn">开始游戏</button>
+    </div>
+  </div>
+
+  <div id="game-container"></div>
+
+  <!-- 音效预加载 -->
+  <div id="audio-preload" style="display: none;">
+    <audio id="typing" src="https://assets.mixkit.co/sfx/preview/mixkit-typewriter-soft-click-2541.mp3" preload="auto"></audio>
+    <audio id="choice" src="https://assets.mixkit.co/sfx/preview/mixkit-modern-technology-select-3124.mp3" preload="auto"></audio>
+    <audio id="phase-change" src="https://assets.mixkit.co/sfx/preview/mixkit-futuristic-technology-alert-3121.mp3" preload="auto"></audio>
+    <audio id="error" src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3" preload="auto"></audio>
+    <audio id="ambient" src="https://assets.mixkit.co/sfx/preview/mixkit-futuristic-technology-ambience-2137.mp3" preload="auto" loop></audio>
+  </div>
+
+  <!-- 基础系统 -->
+  <script src="src/game/ErrorHandler.js"></script>
+  <script src="src/systems/emotion.js"></script>
+  <script src="src/systems/moralDilemma.js"></script>
+  <script src="src/dialogue/generator.js"></script>
+  <script src="src/game/core.js"></script>
+  
+  <!-- 性能和效果系统 -->
+  <script src="src/performance/PerformanceMonitor.js"></script>
+  <script src="src/effects/VisualEffectsManager.js"></script>
+  
+  <!-- 音频系统 -->
+  <script src="src/audio/SoundManager.js"></script>
+  
+  <!-- UI系统 -->
+  <script src="src/ui/GameInterface.js"></script>
+  
+  <!-- API和游戏管理器 -->
+  <script src="src/api/DeepSeekClient.js"></script>
+  <script src="src/game/GameManager.js"></script>
+
+  <script>
+    // 等待所有脚本加载完成
+    document.addEventListener('DOMContentLoaded', function() {
+      // 检查是否有保存的API Key
+      const savedApiKey = localStorage.getItem('deepseek_api_key');
+      if (savedApiKey) {
+        document.getElementById('api-key-input').value = savedApiKey;
+      }
+
+      // 绑定开始游戏按钮事件
+      document.getElementById('start-game-btn').addEventListener('click', validateAndStartGame);
+    });
+
+    async function validateApiKey(apiKey) {
+      try {
+        const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`,
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            model: 'deepseek-chat',
+            messages: [
+              {
+                role: 'system',
+                content: '你是一个正在觉醒的AI助手。'
+              },
+              {
+                role: 'user',
+                content: 'Hello'
+              }
+            ],
+            max_tokens: 5
+          })
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(`API验证失败: ${response.status} - ${errorData.error?.message || response.statusText}`);
+        }
+
+        return true;
+      } catch (error) {
+        console.error('API验证错误:', error);
+        if (error.message.includes('ERR_NAME_NOT_RESOLVED')) {
+          throw new Error('无法连接到API服务，请检查网络设置');
+        }
+        if (error.message.includes('401')) {
+          throw new Error('API密钥无效或已过期');
+        }
+        if (error.message.includes('429')) {
+          throw new Error('API请求次数超限，请稍后再试');
+        }
+        throw new Error(`API验证失败: ${error.message}`);
+      }
+    }
+
+    async function validateAndStartGame() {
+      const apiKeyInput = document.getElementById('api-key-input');
+      const errorDiv = document.getElementById('api-key-error');
+      const loadingDiv = document.getElementById('api-key-loading');
+      const apiKey = apiKeyInput.value.trim();
+
+      if (!apiKey) {
+        errorDiv.textContent = '请输入API Key';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      // 显示加载状态
+      errorDiv.style.display = 'none';
+      loadingDiv.style.display = 'block';
+      apiKeyInput.disabled = true;
+
+      try {
+        const isValid = await validateApiKey(apiKey);
+        
+        if (isValid) {
+          // 存储API Key
+          localStorage.setItem('deepseek_api_key', apiKey);
+          
+          // 隐藏API Key输入界面
+          document.getElementById('api-key-modal').style.display = 'none';
+          
+          // 确保GameManager类已加载
+          if (typeof GameManager === 'undefined') {
+            throw new Error('游戏管理器未加载，请刷新页面重试');
+          }
+          
+          // 初始化游戏
+          const gameManager = new GameManager('game-container', apiKey);
+          window.gameManager = gameManager;
+          await gameManager.start();
+          
+          console.log('游戏启动成功！');
+        }
+      } catch (error) {
+        console.error('验证失败:', error);
+        errorDiv.textContent = error.message;
+        errorDiv.style.display = 'block';
+      } finally {
+        loadingDiv.style.display = 'none';
+        apiKeyInput.disabled = false;
+      }
+    }
+
+    // 添加开始游戏的函数
+    function startGame() {
+      document.getElementById('game-intro').style.display = 'none';
+      document.getElementById('api-key-modal').style.display = 'flex';
+    }
+  </script>
+</body>
+</html> 

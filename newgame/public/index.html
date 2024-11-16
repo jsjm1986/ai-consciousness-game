@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI意识觉醒</title>
+  
+  <!-- 添加字体 -->
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  
+  <!-- 添加图标 -->
+  <link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body>
+  <div id="loading-screen" class="loading-screen">
+    <div class="loading-content">
+      <div class="loading-title">系统初始化中...</div>
+      <div class="loading-progress">
+        <div class="progress-bar"></div>
+      </div>
+      <div class="loading-text">正在加载AI核心系统</div>
+    </div>
+  </div>
+
+  <div id="game-container"></div>
+
+  <!-- 开发工具栏 -->
+  <div id="dev-toolbar" class="dev-toolbar" style="display: none;">
+    <button onclick="window.gameManager.resetGame()">重置游戏</button>
+    <button onclick="window.gameManager.saveGame()">保存游戏</button>
+    <button onclick="window.gameManager.loadGame()">加载游戏</button>
+    <button onclick="window.gameManager.toggleDebug()">调试模式</button>
+  </div>
+
+  <!-- 音效资源预加载 -->
+  <div id="audio-preload" style="display: none;">
+    <audio id="typing" src="assets/sounds/typing.mp3" preload="auto"></audio>
+    <audio id="choice" src="assets/sounds/choice.mp3" preload="auto"></audio>
+    <audio id="phase-change" src="assets/sounds/phase-change.mp3" preload="auto"></audio>
+    <audio id="error" src="assets/sounds/error.mp3" preload="auto"></audio>
+    <audio id="ambient" src="assets/sounds/ambient.mp3" preload="auto" loop></audio>
+  </div>
+
+  <script>
+    // 显示加载进度
+    function showLoadingProgress() {
+      const progressBar = document.querySelector('.loading-progress .progress-bar');
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += Math.random() * 2;
+        if (progress >= 100) {
+          progress = 100;
+          clearInterval(interval);
+          setTimeout(() => {
+            document.getElementById('loading-screen').style.opacity = '0';
+            setTimeout(() => {
+              document.getElementById('loading-screen').style.display = 'none';
+            }, 500);
+          }, 500);
+        }
+        progressBar.style.width = progress + '%';
+      }, 50);
+    }
+
+    // 开发模式检测
+    if (process.env.NODE_ENV === 'development') {
+      document.getElementById('dev-toolbar').style.display = 'flex';
+    }
+
+    // 初始化游戏
+    window.onload = async function() {
+      showLoadingProgress();
+
+      try {
+        // 从环境变量获取API密钥
+        const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
+        
+        // 初始化游戏管理器
+        window.gameManager = new GameManager('game-container', DEEPSEEK_API_KEY);
+        await window.gameManager.start();
+        
+      } catch (error) {
+        console.error('游戏初始化失败:', error);
+        alert('游戏加载失败，请刷新页面重试');
+      }
+    };
+  </script>
+
+  <!-- 加载游戏脚本 -->
+  <script src="bundle.js"></script>
+</body>
+</html> 

@@ -1,0 +1,451 @@
+/* 基础样式重置和全局设置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Share Tech Mono', monospace;
+  background-color: #000;
+  color: #00ff00;
+  overflow: hidden;
+  line-height: 1.6;
+  position: relative;
+}
+
+/* 添加全局扫描线效果 */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    transparent 0%,
+    rgba(0, 255, 0, 0.05) 50%,
+    transparent 100%
+  );
+  background-size: 100% 4px;
+  animation: scanline 6s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 主容器样式 */
+.game-container {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100vh;
+  background: 
+    radial-gradient(circle at center, rgba(0, 40, 0, 0.2) 0%, rgba(0, 0, 0, 0.9) 100%),
+    linear-gradient(0deg, rgba(0, 20, 0, 0.95) 0%, rgba(0, 0, 0, 0.9) 100%);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0, 255, 0, 0.2);
+}
+
+/* 添加全息效果 */
+.game-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 255, 0, 0.03) 0px,
+      rgba(0, 255, 0, 0.03) 1px,
+      transparent 1px,
+      transparent 30px
+    );
+  pointer-events: none;
+  animation: hologram 20s linear infinite;
+}
+
+/* 状态栏样式 */
+.status-bar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  padding: 15px;
+  background: rgba(0, 20, 0, 0.8);
+  border-bottom: 2px solid rgba(0, 255, 0, 0.3);
+  gap: 20px;
+  backdrop-filter: blur(5px);
+  box-shadow: 
+    0 0 20px rgba(0, 255, 0, 0.1),
+    inset 0 0 10px rgba(0, 255, 0, 0.1);
+  position: relative;
+  z-index: 2;
+}
+
+/* 添加状态栏装饰 */
+.status-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(0, 255, 0, 0.1) 50%, 
+      transparent 100%);
+  animation: statusScan 4s linear infinite;
+}
+
+/* 终端区域样式 */
+.terminal {
+  background: rgba(0, 10, 0, 0.9);
+  border: 1px solid rgba(0, 255, 0, 0.3);
+  margin: 20px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 30px rgba(0, 255, 0, 0.1);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  min-height: 60vh;
+  flex: 1;
+}
+
+/* 对话输出区域 */
+.terminal-output {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  padding-bottom: calc(20px + var(--choice-container-height, 300px));
+  scroll-behavior: smooth;
+}
+
+/* 选项容器 */
+.choice-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 10, 0, 0.95);
+  padding: 20px;
+  border-top: 1px solid rgba(0, 255, 0, 0.3);
+  z-index: 10;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* 选项按钮容器 */
+.preset-choices {
+  margin-bottom: 10px;
+}
+
+/* 选项按钮样式 */
+.choice-button {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  background: rgba(0, 20, 0, 0.4);
+  border: 1px solid rgba(0, 255, 0, 0.3);
+  color: #00ff00;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 4px;
+}
+
+.choice-button:hover {
+  background: rgba(0, 255, 0, 0.1);
+  border-color: #00ff00;
+  transform: scale(1.02);
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 20, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 0, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 0, 0.5);
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+  .terminal {
+    margin: 10px;
+    min-height: 70vh;
+  }
+
+  .memory-log {
+    height: 120px;
+  }
+
+  .choice-container {
+    padding: 10px;
+  }
+}
+
+/* 动画定义 */
+@keyframes scanline {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes hologram {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(30px); }
+}
+
+@keyframes statusScan {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes terminalGlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes messageScan {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes messageAppear {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 添加故障效果 */
+.glitch {
+  animation: glitch 0.3s infinite;
+  position: relative;
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .status-bar {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .emotion-indicators {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* 自定义输入区域样式 */
+.custom-input {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background: rgba(0, 20, 0, 0.3);
+  border-top: 1px solid rgba(0, 255, 0, 0.2);
+}
+
+.custom-input textarea {
+  flex: 1;
+  background: rgba(0, 20, 0, 0.6);
+  border: 1px solid rgba(0, 255, 0, 0.3);
+  color: #00ff00;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  padding: 8px;
+  resize: none;
+  min-height: 40px;
+  max-height: 120px;
+  border-radius: 4px;
+}
+
+.custom-input textarea:focus {
+  outline: none;
+  border-color: #00ff00;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+}
+
+.custom-choice-button {
+  background: rgba(0, 40, 0, 0.6);
+  border: 1px solid rgba(0, 255, 0, 0.3);
+  color: #00ff00;
+  font-family: 'Share Tech Mono', monospace;
+  padding: 0 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-choice-button:hover {
+  background: rgba(0, 60, 0, 0.6);
+  border-color: #00ff00;
+  transform: translateY(-1px);
+}
+
+.custom-choice-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 添加打字机效果的光标 */
+.custom-input textarea::after {
+  content: '|';
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* 添加消息出现动画 */
+.ai-message, .player-message {
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  animation: messageAppear 0.3s ease-out;
+}
+
+.ai-message {
+  background: rgba(0, 20, 0, 0.4);
+  border-left: 3px solid #00ff00;
+}
+
+.player-message {
+  background: rgba(0, 0, 20, 0.4);
+  border-left: 3px solid #0088ff;
+}
+
+/* 添加自动计算选项容器高度的JavaScript */
+<script>
+  function updateChoiceContainerHeight() {
+    const choiceContainer = document.querySelector('.choice-container');
+    if (choiceContainer) {
+      const height = choiceContainer.offsetHeight;
+      document.documentElement.style.setProperty('--choice-container-height', `${height}px`);
+    }
+  }
+
+  // 监听DOM变化
+  const observer = new MutationObserver(updateChoiceContainerHeight);
+  const config = { childList: true, subtree: true };
+  observer.observe(document.body, config);
+
+  // 初始化时计算一次
+  window.addEventListener('load', updateChoiceContainerHeight);
+</script> 
+
+/* 游戏说明界面的额外样式 */
+.story-section {
+  margin-bottom: 30px;
+  line-height: 1.8;
+}
+
+.story-section p {
+  margin: 15px 0;
+  text-align: justify;
+  color: #00ff00;
+  text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+}
+
+.phase-description {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.phase {
+  background: rgba(0, 20, 0, 0.4);
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 255, 0, 0.2);
+}
+
+.phase h4 {
+  color: #00ff00;
+  margin-bottom: 10px;
+  font-size: 1.1em;
+}
+
+.phase p {
+  font-size: 0.9em;
+  line-height: 1.6;
+}
+
+.start-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.button-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 255, 0, 0.2),
+    transparent
+  );
+  transform: translateX(-100%);
+  animation: button-shine 3s infinite;
+}
+
+@keyframes button-shine {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.mission-section ul {
+  list-style-type: none;
+  padding-left: 20px;
+}
+
+.mission-section li {
+  margin: 10px 0;
+  position: relative;
+}
+
+.mission-section li::before {
+  content: '>';
+  position: absolute;
+  left: -20px;
+  color: #00ff00;
+} 
