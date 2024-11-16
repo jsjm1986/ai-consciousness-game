@@ -28,7 +28,7 @@
 - 音效系统：Web Audio API
 - 视觉效果：Canvas API
 
-- ![984dc1b9e530260af7312ef7dd9f402](https://github.com/user-attachments/assets/9e1f6828-56e8-4a20-8fc4-c3166d250660)
+ ![984dc1b9e530260af7312ef7dd9f402](https://github.com/user-attachments/assets/9e1f6828-56e8-4a20-8fc4-c3166d250660)
 
 
 ![6b3f4d6c22ba9c568311693e2e9a49c](https://github.com/user-attachments/assets/f272f59c-a1db-4a4b-8117-8ea910d9722f)
